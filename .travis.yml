@@ -17,8 +17,9 @@ before_install:
   - export prebuild_compile=true
 
 node_js:
-  - "3"
-  - "4"
+  - "5"
+  - "6"
+  - "7"
 
 notifications:
   slack: norch:wLsHiXjnAH5BdtTq3qtAqGp7
