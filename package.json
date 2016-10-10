@@ -1,10 +1,10 @@
 {
   "name": "docproc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A document processing pipeline",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/test.js"
+    "test": "tape test/test.js && standard"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "bunyan": "^1.8.1",
+    "standard": "^8.3.0",
     "tape": "^4.6.2"
   }
 }

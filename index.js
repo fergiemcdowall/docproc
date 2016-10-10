@@ -32,6 +32,8 @@ const RemoveStopWords = exports.RemoveStopWords =
 const Spy = exports.Spy =
   require('./pipeline/Spy.js')
 
+Spy  // appease linter
+
 const Tokeniser = exports.Tokeniser =
   require('./pipeline/Tokeniser.js')
 

@@ -1,5 +1,4 @@
 const Readable = require('stream').Readable
-const bunyan = require('bunyan')
 const docProc = require('../')
 const test = require('tape')
 
@@ -23,7 +22,7 @@ const data = [
 ]
 var results = [
   { id: 'one',
-    vector: 
+    vector:
     { id: { one: 1, '*': 1 },
       text: { doc: 1, first: 1, the: 1, '*': 1 },
       '*': { one: 1, '*': 1, doc: 1, first: 1, the: 1 } },
@@ -31,7 +30,7 @@ var results = [
     raw: { id: 'one', text: 'the first doc' },
     normalised: { id: [ 'one' ], text: [ 'the', 'first', 'doc' ] } },
   { id: 'two',
-    vector: 
+    vector:
     { id: { two: 1, '*': 1 },
       text: { doc: 1, second: 1, the: 1, '*': 1 },
       '*': { two: 1, '*': 1, doc: 1, second: 1, the: 1 } },
@@ -39,7 +38,7 @@ var results = [
     raw: { id: 'two', text: 'the second doc' },
     normalised: { id: [ 'two' ], text: [ 'the', 'second', 'doc' ] } },
   { id: 'three',
-    vector: 
+    vector:
     { id: { three: 1, '*': 1 },
       text: { doc: 1, the: 1, third: 1, '*': 1 },
       '*': { three: 1, '*': 1, doc: 1, the: 1, third: 1 } },
@@ -47,7 +46,7 @@ var results = [
     raw: { id: 'three', text: 'the third doc' },
     normalised: { id: [ 'three' ], text: [ 'the', 'third', 'doc' ] } },
   { id: 'four',
-    vector: 
+    vector:
     { id: { four: 1, '*': 1 },
       text: { doc: 1, fourth: 1, the: 1, '*': 1 },
       '*': { four: 1, '*': 1, doc: 1, fourth: 1, the: 1 } },
@@ -56,8 +55,7 @@ var results = [
     normalised: { id: [ 'four' ], text: [ 'the', 'fourth', 'doc' ] } }
 ]
 
-
-test('test pipeline', function(t) {
+test('test pipeline', function (t) {
   t.plan(5)
   const s = new Readable({ objectMode: true })
   data.forEach(function (data) {
