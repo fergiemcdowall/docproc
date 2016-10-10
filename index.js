@@ -60,6 +60,6 @@ exports.pipeline = function (options) {
     new CreateSortVectors(options),
     new FieldedSearch(options)
   ]
-  return pumpify.obj(...pl)
+  return pumpify.obj.apply(this, pl)
 }
 
