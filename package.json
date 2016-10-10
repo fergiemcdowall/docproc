@@ -14,7 +14,8 @@
     "document",
     "processing",
     "pipeline",
-    "norch"
+    "norch",
+    "stream"
   ],
   "author": "Fergus McDowall",
   "license": "MIT",
