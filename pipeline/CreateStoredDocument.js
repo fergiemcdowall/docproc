@@ -14,11 +14,11 @@ CreateStoredDocument.prototype._transform = function (doc, encoding, end) {
     var fieldOptions = _defaults(
       this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
       {
-        storeable: this.options.storeable // Store a cache of this field in the index
+        storeable: this.options.storeable || true // Store a cache of this field in the index
       })
     if (fieldName === 'id') fieldOptions.storeable = true
     if (fieldOptions.storeable) {
-      doc.stored[fieldName] = doc.raw[fieldName]
+      doc.stored[fieldName] = JSON.parse(JSON.stringify(doc.raw[fieldName]))
     }
   }
   this.push(doc)

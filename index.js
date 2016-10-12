@@ -1,5 +1,6 @@
 const bunyan = require('bunyan')
 const pumpify = require('pumpify')
+const stopwords = require('stopword').en
 const _defaults = require('lodash.defaults')
 
 const CalculateTermFrequency = exports.CalculateTermFrequency =
@@ -43,8 +44,9 @@ exports.pipeline = function (options) {
       name: 'pipeline',
       level: 'error'
     }),
-    separator: ' ',
+    separator: /[\|' \.,\-|(\\\n)]+/,
     searchable: true,
+    stopwords: stopwords,
     nGramLength: 1,
     fieldedSearch: true
   })
@@ -63,3 +65,6 @@ exports.pipeline = function (options) {
   return pumpify.obj.apply(this, pl)
 }
 
+exports.customPipeline = function (pl) {
+  return pumpify.obj.apply(this, pl)
+}

@@ -15,7 +15,7 @@ CreateCompositeVector.prototype._transform = function (doc, encoding, end) {
     var fieldOptions = _defaults(
       this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
       {
-        searchable: this.options.searchable // Should this field be searchable in the composite field
+        searchable: this.options.searchable || true // Should this field be searchable in the composite field
       })
     if (fieldOptions.searchable) {
       var vec = doc.vector[fieldName]

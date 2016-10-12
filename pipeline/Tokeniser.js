@@ -14,9 +14,10 @@ Tokeniser.prototype._transform = function (doc, encoding, end) {
     var fieldOptions = _defaults(
       this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
       {
-        separator: this.options.separator // A string.split() expression to tokenize raw field input
+        // A string.split() expression to tokenize raw field input
+        separator: this.options.separator
       })
-    doc.normalised[fieldName] =
+    doc.tokenised[fieldName] =
       doc.normalised[fieldName].split(fieldOptions.separator)
   }
   this.push(doc)

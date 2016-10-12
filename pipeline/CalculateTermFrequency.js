@@ -18,17 +18,16 @@ const CalculateTermFrequency = function (options) {
 module.exports = CalculateTermFrequency
 util.inherits(CalculateTermFrequency, Transform)
 CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
-  for (var fieldName in doc.normalised) {
-    var field = doc.normalised[fieldName]
+  for (var fieldName in doc.tokenised) {
+    var field = doc.tokenised[fieldName]
     var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
+      this.options.fieldOptions[fieldName] || {},
       {
-        fieldedSearch: this.options.fieldedSearch, // can search on this field individually
-        nGramLength: this.options.nGramLength,
-        searchable: this.options.searchable,       // included in the wildcard search ('*')
+        fieldedSearch: this.options.fieldedSearch || true, // can search on this field individually
+        nGramLength: this.options.nGramLength || 1,
+        searchable: this.options.searchable || true,       // included in the wildcard search ('*')
         weight: this.options.weight
       })
-
     if (fieldOptions.fieldedSearch || fieldOptions.searchable) {
       doc.vector[fieldName] = tf.getTermFrequency(
         tv.getVector(field, fieldOptions.nGramLength), {

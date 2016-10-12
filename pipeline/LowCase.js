@@ -5,7 +5,6 @@ const util = require('util')
 const LowCase = function (options) {
   this.options = options || {}
   this.options.fieldOptions = this.options.fieldOptions || {}
-  options.log.info('Pipeline stage: LowCase')
   Transform.call(this, { objectMode: true })
 }
 module.exports = LowCase

@@ -11,10 +11,11 @@ util.inherits(IngestDoc, Transform)
 IngestDoc.prototype._transform = function (doc, encoding, end) {
   var ingestedDoc = {
     id: String(String(doc.id) || (Date.now() + '-' + ++this.i)),
-    vector: {},
-    stored: {},
+    normalised: {},
     raw: JSON.parse(JSON.stringify(doc)),
-    normalised: doc
+    stored: {},
+    tokenised: {},
+    vector: {}
   }
   this.push(ingestedDoc)  // should this actually be stringified?
   return end()

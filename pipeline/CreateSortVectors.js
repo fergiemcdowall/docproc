@@ -26,7 +26,7 @@ CreateSortVectors.prototype._transform = function (doc, encoding, end) {
       })
     if (fieldOptions.sortable) {
       doc.vector[fieldName] = tf.getTermFrequency(
-        tv.getVector(doc.normalised[fieldName]),
+        tv.getVector(doc.tokenised[fieldName]),
         { scheme: tf.selfString }
       ).reduce(objectify, {})
     }
