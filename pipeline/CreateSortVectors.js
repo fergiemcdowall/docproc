@@ -1,7 +1,6 @@
 const tf = require('term-frequency')
 const tv = require('term-vector')
 const Transform = require('stream').Transform
-const _defaults = require('lodash.defaults')
 const util = require('util')
 
 // convert term-frequency vectors into object maps
@@ -11,20 +10,19 @@ const objectify = function (result, item) {
 }
 
 const CreateSortVectors = function (options) {
-  this.options = _defaults(options || {}, {
-    searchable: true,
+  this.options = Object.assign({}, {
     fieldOptions: {},
     sortable: false
-  })
+  }, options)
   Transform.call(this, { objectMode: true })
 }
 module.exports = CreateSortVectors
 util.inherits(CreateSortVectors, Transform)
 CreateSortVectors.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.vector) {
-    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
-      sortable: this.options.sortable // Should this field be sortable
-    })
+    var fieldOptions = Object.assign({}, {
+      sortable: this.options.sortable
+    }, this.options.fieldOptions[fieldName])
     if (fieldOptions.sortable) {
       doc.vector[fieldName] = tf.getTermFrequency(
         tv.getVector(doc.tokenised[fieldName]),

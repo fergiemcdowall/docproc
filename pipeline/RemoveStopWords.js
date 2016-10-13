@@ -1,22 +1,20 @@
 const Transform = require('stream').Transform
-const _defaults = require('lodash.defaults')
 const util = require('util')
 
 const RemoveStopWords = function (options) {
-  this.options = _defaults(options || {}, {
-    searchable: true,
+  this.options = Object.assign({}, {
     fieldOptions: {},
-    stopwords: false
-  })
+    stopwords: []
+  }, options)
   Transform.call(this, { objectMode: true })
 }
 module.exports = RemoveStopWords
 util.inherits(RemoveStopWords, Transform)
 RemoveStopWords.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.normalised) {
-    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
-      stopwords: this.options.stopwords || []
-    })
+    var fieldOptions = Object.assign({}, {
+      stopwords: this.options.stopwords
+    }, this.options.fieldOptions[fieldName])
     // remove stopwords
     doc.tokenised[fieldName] =
       doc.tokenised[fieldName].filter(function (item) {

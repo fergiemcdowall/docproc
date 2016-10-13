@@ -1,7 +1,6 @@
 const bunyan = require('bunyan')
 const pumpify = require('pumpify')
 const stopwords = []
-const _defaults = require('lodash.defaults')
 
 const CalculateTermFrequency = exports.CalculateTermFrequency =
   require('./pipeline/CalculateTermFrequency.js')
@@ -39,13 +38,13 @@ const Tokeniser = exports.Tokeniser =
   require('./pipeline/Tokeniser.js')
 
 exports.pipeline = function (options) {
-  options = _defaults(options || {}, {
+  options = Object.assign({}, {
     separator: /[\|' \.,\-|(\\\n)]+/,
     searchable: true,
     stopwords: stopwords,
     nGramLength: 1,
     fieldedSearch: true
-  })
+  }, options)
   options.log = bunyan.createLogger({
     name: 'pipeline',
     level: options.logLevel || 'error'

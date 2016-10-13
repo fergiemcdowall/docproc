@@ -1,7 +1,6 @@
 const tv = require('term-vector')
 const tf = require('term-frequency')
 const Transform = require('stream').Transform
-const _defaults = require('lodash.defaults')
 const util = require('util')
 
 // convert term-frequency vectors into object maps
@@ -11,26 +10,24 @@ const objectify = function (result, item) {
 }
 
 const CalculateTermFrequency = function (options) {
-  this.options = _defaults(options || {}, {
+  this.options = Object.assign({}, {
     fieldOptions: {},
     nGramLength: 1,
     searchable: true,
     weight: 0
-  })
+  }, options)
   Transform.call(this, { objectMode: true })
 }
 module.exports = CalculateTermFrequency
 util.inherits(CalculateTermFrequency, Transform)
 CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.tokenised) {
+    var fieldOptions = Object.assign({}, {
+      nGramLength: this.options.nGramLength,
+      searchable: this.options.searchable,
+      weight: this.options.weight
+    }, this.options.fieldOptions[fieldName])
     var field = doc.tokenised[fieldName]
-    var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},
-      {
-        nGramLength: this.options.nGramLength,
-        searchable: this.options.searchable,       // included in the wildcard search ('*')
-        weight: this.options.weight
-      })
     if (fieldOptions.searchable) {
       doc.vector[fieldName] = tf.getTermFrequency(
         tv.getVector(field, fieldOptions.nGramLength), {
