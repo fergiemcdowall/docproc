@@ -27,7 +27,6 @@
     "bunyan": "^1.8.1",
     "lodash.defaults": "^4.2.0",
     "pumpify": "^1.3.5",
-    "stopword": "^0.1.1",
     "term-frequency": "^0.0.13",
     "term-vector": "^0.1.2"
   },

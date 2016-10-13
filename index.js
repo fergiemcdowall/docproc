@@ -1,6 +1,6 @@
 const bunyan = require('bunyan')
 const pumpify = require('pumpify')
-const stopwords = require('stopword').en
+const stopwords = []
 const _defaults = require('lodash.defaults')
 
 const CalculateTermFrequency = exports.CalculateTermFrequency =
