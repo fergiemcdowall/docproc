@@ -11,8 +11,12 @@ const objectify = function (result, item) {
 }
 
 const CalculateTermFrequency = function (options) {
-  this.options = options || {}
-  this.options.fieldOptions = this.options.fieldOptions || {}
+  this.options = _defaults(options || {}, {
+    fieldOptions: {},
+    nGramLength: 1,
+    searchable: true,
+    weight: 0
+  })
   Transform.call(this, { objectMode: true })
 }
 module.exports = CalculateTermFrequency
@@ -23,12 +27,11 @@ CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
     var fieldOptions = _defaults(
       this.options.fieldOptions[fieldName] || {},
       {
-        fieldedSearch: this.options.fieldedSearch || true, // can search on this field individually
-        nGramLength: this.options.nGramLength || 1,
-        searchable: this.options.searchable || true,       // included in the wildcard search ('*')
+        nGramLength: this.options.nGramLength,
+        searchable: this.options.searchable,       // included in the wildcard search ('*')
         weight: this.options.weight
       })
-    if (fieldOptions.fieldedSearch || fieldOptions.searchable) {
+    if (fieldOptions.searchable) {
       doc.vector[fieldName] = tf.getTermFrequency(
         tv.getVector(field, fieldOptions.nGramLength), {
           scheme: tf.doubleNormalization0point5,

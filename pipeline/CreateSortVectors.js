@@ -11,19 +11,20 @@ const objectify = function (result, item) {
 }
 
 const CreateSortVectors = function (options) {
-  this.options = options || {}
-  this.options.fieldOptions = this.options.fieldOptions || {}
+  this.options = _defaults(options || {}, {
+    searchable: true,
+    fieldOptions: {},
+    sortable: false
+  })
   Transform.call(this, { objectMode: true })
 }
 module.exports = CreateSortVectors
 util.inherits(CreateSortVectors, Transform)
 CreateSortVectors.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.vector) {
-    var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
-      {
-        sortable: this.options.sortable // Should this field be sortable
-      })
+    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
+      sortable: this.options.sortable // Should this field be sortable
+    })
     if (fieldOptions.sortable) {
       doc.vector[fieldName] = tf.getTermFrequency(
         tv.getVector(doc.tokenised[fieldName]),

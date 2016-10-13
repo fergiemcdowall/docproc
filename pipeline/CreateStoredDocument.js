@@ -3,19 +3,19 @@ const _defaults = require('lodash.defaults')
 const util = require('util')
 
 const CreateStoredDocument = function (options) {
-  this.options = options || {}
-  this.options.fieldOptions = this.options.fieldOptions || {}
+  this.options = _defaults(options || {}, {
+    fieldOptions: {},
+    storeable: true
+  })
   Transform.call(this, { objectMode: true })
 }
 module.exports = CreateStoredDocument
 util.inherits(CreateStoredDocument, Transform)
 CreateStoredDocument.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.raw) {
-    var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
-      {
-        storeable: this.options.storeable || true // Store a cache of this field in the index
-      })
+    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
+      storeable: this.options.storeable // Store a cache of this field in the index
+    })
     if (fieldName === 'id') fieldOptions.storeable = true
     if (fieldOptions.storeable) {
       doc.stored[fieldName] = JSON.parse(JSON.stringify(doc.raw[fieldName]))

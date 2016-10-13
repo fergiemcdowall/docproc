@@ -3,19 +3,20 @@ const _defaults = require('lodash.defaults')
 const util = require('util')
 
 const RemoveStopWords = function (options) {
-  this.options = options || {}
-  this.options.fieldOptions = this.options.fieldOptions || {}
+  this.options = _defaults(options || {}, {
+    searchable: true,
+    fieldOptions: {},
+    stopwords: false
+  })
   Transform.call(this, { objectMode: true })
 }
 module.exports = RemoveStopWords
 util.inherits(RemoveStopWords, Transform)
 RemoveStopWords.prototype._transform = function (doc, encoding, end) {
   for (var fieldName in doc.normalised) {
-    var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
-      {
-        stopwords: this.options.stopwords || []
-      })
+    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
+      stopwords: this.options.stopwords || []
+    })
     // remove stopwords
     doc.tokenised[fieldName] =
       doc.tokenised[fieldName].filter(function (item) {

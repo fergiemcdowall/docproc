@@ -40,15 +40,15 @@ const Tokeniser = exports.Tokeniser =
 
 exports.pipeline = function (options) {
   options = _defaults(options || {}, {
-    log: bunyan.createLogger({
-      name: 'pipeline',
-      level: 'error'
-    }),
     separator: /[\|' \.,\-|(\\\n)]+/,
     searchable: true,
     stopwords: stopwords,
     nGramLength: 1,
     fieldedSearch: true
+  })
+  options.log = bunyan.createLogger({
+    name: 'pipeline',
+    level: options.logLevel || 'error'
   })
   var pl = [
     new IngestDoc(options),

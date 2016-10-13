@@ -3,8 +3,10 @@ const _defaults = require('lodash.defaults')
 const util = require('util')
 
 const CreateCompositeVector = function (options) {
-  this.options = options || {}
-  this.options.fieldOptions = this.options.fieldOptions || {}
+  this.options = _defaults(options || {}, {
+    searchable: true,
+    fieldOptions: {}
+  })
   Transform.call(this, { objectMode: true })
 }
 module.exports = CreateCompositeVector
@@ -12,11 +14,10 @@ util.inherits(CreateCompositeVector, Transform)
 CreateCompositeVector.prototype._transform = function (doc, encoding, end) {
   doc.vector['*'] = {}
   for (var fieldName in doc.vector) {
-    var fieldOptions = _defaults(
-      this.options.fieldOptions[fieldName] || {},  // TODO- this is wrong
-      {
-        searchable: this.options.searchable || true // Should this field be searchable in the composite field
-      })
+    var fieldOptions = _defaults(this.options.fieldOptions[fieldName] || {}, {
+      // Should this field be searchable in the composite field
+      searchable: this.options.searchable
+    })
     if (fieldOptions.searchable) {
       var vec = doc.vector[fieldName]
       for (var token in vec) {

@@ -1,8 +1,7 @@
 const util = require('util')
 const Transform = require('stream').Transform
 
-const NormaliseFields = function (options) {
-  this.options = options
+const NormaliseFields = function () {
   Transform.call(this, { objectMode: true })
 }
 module.exports = NormaliseFields
