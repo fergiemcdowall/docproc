@@ -10,23 +10,23 @@ const objectify = function (result, item) {
 }
 
 const CalculateTermFrequency = function (options) {
-  this.options = Object.assign({}, {
-    fieldOptions: {},
-    nGramLength: 1,
-    searchable: true,
-    weight: 0
-  }, options)
   Transform.call(this, { objectMode: true })
 }
 module.exports = CalculateTermFrequency
 util.inherits(CalculateTermFrequency, Transform)
 CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
+  var options = Object.assign({}, {
+    fieldOptions: {},
+    nGramLength: 1,
+    searchable: true,
+    weight: 0
+  }, doc.options || {})
   for (var fieldName in doc.tokenised) {
     var fieldOptions = Object.assign({}, {
-      nGramLength: this.options.nGramLength,
-      searchable: this.options.searchable,
-      weight: this.options.weight
-    }, this.options.fieldOptions[fieldName])
+      nGramLength: options.nGramLength,
+      searchable: options.searchable,
+      weight: options.weight
+    }, options.fieldOptions[fieldName])
     var field = doc.tokenised[fieldName]
     if (fieldOptions.searchable) {
       doc.vector[fieldName] = tf.getTermFrequency(

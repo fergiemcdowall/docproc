@@ -21,10 +21,18 @@ const data = [
   }
 ]
 
+const ops = {
+  fieldedSearch: true,
+  nGramLength: 1,
+  searchable: true,
+  separator: /[|' .,\-|(\\\n)]+/,
+  stopwords: [] }
+
 test('test pipeline', function (t) {
   var results = [
     { id: 'one',
       normalised: { id: 'one', text: 'the first doc' },
+      options: ops,
       raw: { id: 'one', text: 'the first doc' },
       stored: { id: 'one', text: 'the first doc' },
       tokenised: { id: [ 'one' ], text: [ 'the', 'first', 'doc' ] },
@@ -34,6 +42,7 @@ test('test pipeline', function (t) {
         '*': { one: 1, '*': 1, doc: 1, first: 1, the: 1 } } },
     { id: 'two',
       normalised: { id: 'two', text: 'the second doc' },
+      options: ops,
       raw: { id: 'two', text: 'the second doc' },
       stored: { id: 'two', text: 'the second doc' },
       tokenised: { id: [ 'two' ], text: [ 'the', 'second', 'doc' ] },
@@ -43,6 +52,7 @@ test('test pipeline', function (t) {
         '*': { two: 1, '*': 1, doc: 1, second: 1, the: 1 } } },
     { id: 'three',
       normalised: { id: 'three', text: 'the third doc' },
+      options: ops,
       raw: { id: 'three', text: { the: 'third doc' } },
       stored: { id: 'three', text: { the: 'third doc' } },
       tokenised: { id: [ 'three' ], text: [ 'the', 'third', 'doc' ] },
@@ -52,6 +62,7 @@ test('test pipeline', function (t) {
         '*': { three: 1, '*': 1, doc: 1, the: 1, third: 1 } } },
     { id: 'four',
       normalised: { id: 'four', text: 'the fourth doc' },
+      options: ops,
       raw: { id: 'four', text: 'the FOURTH doc' },
       stored: { id: 'four', text: 'the FOURTH doc' },
       tokenised: { id: [ 'four' ], text: [ 'the', 'fourth', 'doc' ] },
@@ -84,24 +95,28 @@ test('test custom pipeline by removing lowcase stage', function (t) {
   var results = [
     { id: 'one',
       normalised: { id: 'one', text: 'the first doc' },
+      options: { fieldedSearch: false, separator: ' ', stopwords: [] },
       raw: { id: 'one', text: 'the first doc' },
       stored: { id: 'one', text: 'the first doc' },
       tokenised: { id: [ 'one' ], text: [ 'the', 'first', 'doc' ] },
       vector: { '*': { one: 1, '*': 1, doc: 1, first: 1, the: 1 } } },
     { id: 'two',
       normalised: { id: 'two', text: 'the second doc' },
+      options: { fieldedSearch: false, separator: ' ', stopwords: [] },
       raw: { id: 'two', text: 'the second doc' },
       stored: { id: 'two', text: 'the second doc' },
       tokenised: { id: [ 'two' ], text: [ 'the', 'second', 'doc' ] },
       vector: { '*': { two: 1, '*': 1, doc: 1, second: 1, the: 1 } } },
     { id: 'three',
       normalised: { id: 'three', text: 'the third doc' },
+      options: { fieldedSearch: false, separator: ' ', stopwords: [] },
       raw: { id: 'three', text: { the: 'third doc' } },
       stored: { id: 'three', text: { the: 'third doc' } },
       tokenised: { id: [ 'three' ], text: [ 'the', 'third', 'doc' ] },
       vector: { '*': { three: 1, '*': 1, doc: 1, the: 1, third: 1 } } },
     { id: 'four',
       normalised: { id: 'four', text: 'the FOURTH doc' },
+      options: { fieldedSearch: false, separator: ' ', stopwords: [] },
       raw: { id: 'four', text: 'the FOURTH doc' },
       stored: { id: 'four', text: 'the FOURTH doc' },
       tokenised: { id: [ 'four' ], text: [ 'the', 'FOURTH', 'doc' ] },
@@ -114,15 +129,19 @@ test('test custom pipeline by removing lowcase stage', function (t) {
   })
   s.push(null)
   s.pipe(docProc.customPipeline([
-    new docProc.IngestDoc(),
+    new docProc.IngestDoc({
+      separator: ' ',
+      stopwords: [],
+      fieldedSearch: false
+    }),
     new docProc.CreateStoredDocument(),
     new docProc.NormaliseFields(),
-    new docProc.Tokeniser({separator: ' '}),
-    new docProc.RemoveStopWords({stopwords: []}),
+    new docProc.Tokeniser(),
+    new docProc.RemoveStopWords(),
     new docProc.CalculateTermFrequency(),
     new docProc.CreateCompositeVector(),
     new docProc.CreateSortVectors(),
-    new docProc.FieldedSearch({fieldedSearch: false})
+    new docProc.FieldedSearch()
   ]))
     .on('data', function (data) {
       t.looseEqual(data, results.shift())

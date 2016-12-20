@@ -1,4 +1,3 @@
-const bunyan = require('bunyan')
 const pumpify = require('pumpify')
 const stopwords = []
 
@@ -39,27 +38,23 @@ const Tokeniser = exports.Tokeniser =
 
 exports.pipeline = function (options) {
   options = Object.assign({}, {
-    separator: /[\|' \.,\-|(\\\n)]+/,
+    separator: /[|' .,\-|(\\\n)]+/,
     searchable: true,
     stopwords: stopwords,
     nGramLength: 1,
     fieldedSearch: true
   }, options)
-  options.log = bunyan.createLogger({
-    name: 'pipeline',
-    level: options.logLevel || 'error'
-  })
   var pl = [
     new IngestDoc(options),
-    new CreateStoredDocument(options),
-    new NormaliseFields(options),
-    new LowCase(options),
-    new Tokeniser(options),
-    new RemoveStopWords(options),
-    new CalculateTermFrequency(options),
-    new CreateCompositeVector(options),
-    new CreateSortVectors(options),
-    new FieldedSearch(options)
+    new CreateStoredDocument(),
+    new NormaliseFields(),
+    new LowCase(),
+    new Tokeniser(),
+    new RemoveStopWords(),
+    new CalculateTermFrequency(),
+    new CreateCompositeVector(),
+    new CreateSortVectors(),
+    new FieldedSearch()
   ]
   return pumpify.obj.apply(this, pl)
 }

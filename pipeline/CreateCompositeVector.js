@@ -2,20 +2,20 @@ const Transform = require('stream').Transform
 const util = require('util')
 
 const CreateCompositeVector = function (options) {
-  this.options = Object.assign({}, {
-    fieldOptions: {},
-    searchable: true
-  }, options)
   Transform.call(this, { objectMode: true })
 }
 module.exports = CreateCompositeVector
 util.inherits(CreateCompositeVector, Transform)
 CreateCompositeVector.prototype._transform = function (doc, encoding, end) {
+  var options = Object.assign({}, {
+    fieldOptions: {},
+    searchable: true
+  }, doc.options || {})
   doc.vector['*'] = {}
   for (var fieldName in doc.vector) {
     var fieldOptions = Object.assign({}, {
-      searchable: this.options.searchable
-    }, this.options.fieldOptions[fieldName])
+      searchable: options.searchable
+    }, options.fieldOptions[fieldName])
     if (fieldOptions.searchable) {
       var vec = doc.vector[fieldName]
       for (var token in vec) {
