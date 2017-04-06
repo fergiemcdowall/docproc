@@ -1,3 +1,4 @@
+// removes stopwords from indexed docs
 const Transform = require('stream').Transform
 const util = require('util')
 

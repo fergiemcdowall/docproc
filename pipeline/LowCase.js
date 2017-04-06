@@ -1,3 +1,4 @@
+// insert all search tokens in lower case
 const Transform = require('stream').Transform
 const util = require('util')
 
@@ -17,7 +18,13 @@ LowCase.prototype._transform = function (doc, encoding, end) {
       preserveCase: options.preserveCase
     }, options.fieldOptions[fieldName])
     if (!fieldOptions.preserveCase) {
-      doc.normalised[fieldName] = doc.normalised[fieldName].toLowerCase()
+      if (Object.prototype.toString.call(doc.normalised[fieldName]) === '[object Array]') {
+        doc.normalised[fieldName].map(function (token) {
+          return token.toLowerCase()
+        })
+      } else {
+        doc.normalised[fieldName] = doc.normalised[fieldName].toLowerCase()
+      }
     }
   }
   this.push(doc)

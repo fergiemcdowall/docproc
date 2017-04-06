@@ -1,3 +1,4 @@
+// split up fields in to arrays of tokens
 const Transform = require('stream').Transform
 const util = require('util')
 
@@ -16,8 +17,13 @@ Tokeniser.prototype._transform = function (doc, encoding, end) {
       // A string.split() expression to tokenize raw field input
       separator: options.separator
     }, options.fieldOptions[fieldName])
-    doc.tokenised[fieldName] =
-      doc.normalised[fieldName].split(fieldOptions.separator)
+    // if field is already an array, simply leave it as such
+    if (Object.prototype.toString.call(doc.normalised[fieldName]) === '[object Array]') {
+      doc.tokenised[fieldName] = doc.normalised[fieldName]
+    } else {
+      doc.tokenised[fieldName] =
+        doc.normalised[fieldName].split(fieldOptions.separator)
+    }
   }
   this.push(doc)
   return end()

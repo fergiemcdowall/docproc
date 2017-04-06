@@ -1,3 +1,6 @@
+// Creates the document that will be returned in the search
+// results. There may be cases where the document that is searchable
+// is not the same as the document that is returned
 const Transform = require('stream').Transform
 const util = require('util')
 
