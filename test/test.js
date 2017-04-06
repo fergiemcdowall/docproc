@@ -153,3 +153,46 @@ test('test custom pipeline by removing lowcase stage', function (t) {
       t.ok('stream ENDed')
     })
 })
+
+test('test custom pipeline by removing lowcase stage', function (t) {
+  var results = [{
+    id: '3',
+    normalised: { content: 'Nexion Smart ERP 14.2.1.0\n\nRelease de ejemplo', id: '3' },
+    options: { fieldedSearch: false, separator: /\s+/, stopwords: [] },
+    raw: { content: 'Nexion Smart ERP 14.2.1.0\n\nRelease de ejemplo', id: '3' },
+    stored: { content: 'Nexion Smart ERP 14.2.1.0\n\nRelease de ejemplo', id: '3' },
+    tokenised: { content: [ 'Nexion', 'Smart', 'ERP', '14.2.1.0', 'Release', 'de', 'ejemplo' ], id: [ '3' ] },
+    vector: { '*': { '*': 1, '14.2.1.0': 1, 'Release': 1, 3: 1, ERP: 1, Nexion: 1, Smart: 1, de: 1, ejemplo: 1 } } }
+  ]
+  t.plan(2)
+  const s = new Readable({ objectMode: true })
+  s.push({
+    id: '3',
+    content: 'Nexion Smart ERP 14.2.1.0\n\nRelease de ejemplo'
+  })
+  s.push(null)
+  s.pipe(docProc.customPipeline([
+    new docProc.IngestDoc({
+      separator: /\s+/,
+      stopwords: [],
+      fieldedSearch: false
+    }),
+    new docProc.CreateStoredDocument(),
+    new docProc.NormaliseFields(),
+    new docProc.Tokeniser(),
+    new docProc.RemoveStopWords(),
+    new docProc.CalculateTermFrequency(),
+    new docProc.CreateCompositeVector(),
+    new docProc.CreateSortVectors(),
+    new docProc.FieldedSearch()
+  ]))
+    .on('data', function (data) {
+      t.looseEqual(data, results.shift())
+    })
+    .on('error', function (err) {
+      t.error(err)
+    })
+    .on('end', function () {
+      t.ok('stream ENDed')
+    })
+})
