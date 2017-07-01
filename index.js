@@ -28,10 +28,7 @@ const NormaliseFields = exports.NormaliseFields =
 const RemoveStopWords = exports.RemoveStopWords =
   require('./pipeline/RemoveStopWords.js')
 
-const Spy = exports.Spy =
-  require('./pipeline/Spy.js')
-
-Spy  // appease linter
+const Spy = exports.Spy = require('./pipeline/Spy.js') // eslint-disable-line 
 
 const Tokeniser = exports.Tokeniser =
   require('./pipeline/Tokeniser.js')

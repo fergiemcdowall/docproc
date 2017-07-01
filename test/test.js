@@ -466,4 +466,3 @@ test('test custom pipeline by removing lowcase stage', function (t) {
       t.ok('stream ENDed')
     })
 })
-

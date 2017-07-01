@@ -32,4 +32,3 @@ IngestDoc.prototype._transform = function (doc, encoding, end) {
   this.push(ingestedDoc)  // should this actually be stringified?
   return end()
 }
-
