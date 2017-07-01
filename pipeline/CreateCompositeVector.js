@@ -9,8 +9,13 @@ util.inherits(CreateCompositeVector, Transform)
 CreateCompositeVector.prototype._transform = function (doc, encoding, end) {
   var options = Object.assign({}, {
     fieldOptions: {},
+    compositeField: true,
     searchable: true
   }, doc.options || {})
+  if (options.compositeField === false) {
+    this.push(doc)
+    return end()
+  }
   doc.vector['*'] = {}
   for (var fieldName in doc.vector) {
     var fieldOptions = Object.assign({}, {

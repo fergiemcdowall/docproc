@@ -19,13 +19,15 @@ CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
     fieldOptions: {},
     nGramLength: 1,
     searchable: true,
-    weight: 0
+    weight: 0,
+    wildcard: true
   }, doc.options || {})
   for (var fieldName in doc.tokenised) {
     var fieldOptions = Object.assign({}, {
       nGramLength: options.nGramLength,
       searchable: options.searchable,
-      weight: options.weight
+      weight: options.weight,
+      wildcard: options.wildcard
     }, options.fieldOptions[fieldName])
     var field = doc.tokenised[fieldName]
     if (fieldOptions.searchable) {
@@ -35,7 +37,7 @@ CalculateTermFrequency.prototype._transform = function (doc, encoding, end) {
           weight: fieldOptions.weight
         }
       ).reduce(objectify, {})
-      doc.vector[fieldName]['*'] = 1  // wildcard search
+      if (fieldOptions.wildcard === true) doc.vector[fieldName]['*'] = 1  // wildcard search
     }
   }
   this.push(doc)
