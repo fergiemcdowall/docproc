@@ -1,6 +1,6 @@
 {
   "name": "docproc",
-  "version": "0.0.11",
+  "version": "1.0.0",
   "description": "A document processing pipeline",
   "main": "index.js",
   "scripts": {
