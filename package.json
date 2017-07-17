@@ -1,10 +1,10 @@
 {
   "name": "docproc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A document processing pipeline",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/test.js && standard --fix"
+    "test": " standard --fix && tape test/*test.js"
   },
   "repository": {
     "type": "git",

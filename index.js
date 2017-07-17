@@ -4,6 +4,9 @@ const stopwords = []
 const CalculateTermFrequency = exports.CalculateTermFrequency =
   require('./pipeline/CalculateTermFrequency.js')
 
+const CharacterNormaliser = exports.CharacterNormaliser =
+  require('./pipeline/CharacterNormaliser.js')
+
 const CreateCompositeVector = exports.CreateCompositeVector =
   require('./pipeline/CreateCompositeVector.js')
 
@@ -48,6 +51,7 @@ exports.pipeline = function (options) {
     new LowCase(),
     new Tokeniser(),
     new RemoveStopWords(),
+    new CharacterNormaliser(),
     new CalculateTermFrequency(),
     new CreateCompositeVector(),
     new CreateSortVectors(),
