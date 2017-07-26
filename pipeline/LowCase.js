@@ -17,9 +17,9 @@ LowCase.prototype._transform = function (doc, encoding, end) {
     var fieldOptions = Object.assign({}, {
       preserveCase: options.preserveCase
     }, options.fieldOptions[fieldName])
-    if (!fieldOptions.preserveCase) {
+    if (fieldOptions.preserveCase === false) {
       if (Object.prototype.toString.call(doc.normalised[fieldName]) === '[object Array]') {
-        doc.normalised[fieldName].map(function (token) {
+        doc.normalised[fieldName] = doc.normalised[fieldName].map(function (token) {
           return token.toLowerCase()
         })
       } else {
