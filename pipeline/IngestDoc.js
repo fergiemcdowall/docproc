@@ -9,10 +9,10 @@ const IngestDoc = function (options) {
 module.exports = IngestDoc
 util.inherits(IngestDoc, Transform)
 IngestDoc.prototype._transform = function (doc, encoding, end) {
-  var that = this
+
   var ingestedDoc = {
     normalised: {},
-    options: that.options,
+    options: this.options,
     raw: JSON.parse(JSON.stringify(doc)),
     stored: {},
     tokenised: {},
