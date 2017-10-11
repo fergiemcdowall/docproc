@@ -10,9 +10,6 @@ const CharacterNormaliser = exports.CharacterNormaliser =
 const CreateCompositeVector = exports.CreateCompositeVector =
   require('./pipeline/CreateCompositeVector.js')
 
-const CreateSortVectors = exports.CreateSortVectors =
-  require('./pipeline/CreateSortVectors.js')
-
 const CreateStoredDocument = exports.CreateStoredDocument =
   require('./pipeline/CreateStoredDocument.js')
 
@@ -54,7 +51,6 @@ exports.pipeline = function (options) {
     new CharacterNormaliser(),
     new CalculateTermFrequency(),
     new CreateCompositeVector(),
-    new CreateSortVectors(),
     new FieldedSearch()
   ]
   return pumpify.obj.apply(this, pl)

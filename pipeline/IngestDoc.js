@@ -9,7 +9,6 @@ const IngestDoc = function (options) {
 module.exports = IngestDoc
 util.inherits(IngestDoc, Transform)
 IngestDoc.prototype._transform = function (doc, encoding, end) {
-
   var ingestedDoc = {
     normalised: {},
     options: this.options,

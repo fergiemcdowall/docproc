@@ -90,7 +90,6 @@ test('test pipeline', function (t) {
     })
 })
 
-
 test('test pipeline', function (t) {
   const ops = {
     fieldedSearch: true,
@@ -120,16 +119,16 @@ test('test pipeline', function (t) {
       { id: { two: 1, '*': 1 },
         text: { doc: 1, 'the, second': 1, '*': 1 },
         '*': { doc: 1, two: 1, '*': 1, 'the, second': 1 } } },
-     { id: 'three',
-       normalised: { id: 'three', text: '{"the":"third doc"}' },
-       options: ops,
-       raw: { id: 'three', text: { the: 'third doc' } },
-       stored: { id: 'three', text: { the: 'third doc' } },
-       tokenised: { id: [ 'three' ], text: [ '{"the":"third', 'doc"}' ] },
-       vector:
-       { id: { '*': 1, three: 1 },
-         text: { '*': 1, 'doc"}': 1, '{"the":"third': 1 },
-         '*': { '*': 1, 'doc"}': 1, three: 1, '{"the":"third': 1 } } },
+    { id: 'three',
+      normalised: { id: 'three', text: '{"the":"third doc"}' },
+      options: ops,
+      raw: { id: 'three', text: { the: 'third doc' } },
+      stored: { id: 'three', text: { the: 'third doc' } },
+      tokenised: { id: [ 'three' ], text: [ '{"the":"third', 'doc"}' ] },
+      vector:
+      { id: { '*': 1, three: 1 },
+        text: { '*': 1, 'doc"}': 1, '{"the":"third': 1 },
+        '*': { '*': 1, 'doc"}': 1, three: 1, '{"the":"third': 1 } } },
     { id: 'four',
       normalised: { id: 'four', text: 'the fourth doc' },
       options: ops,
@@ -158,7 +157,6 @@ test('test pipeline', function (t) {
       t.ok('stream ENDed')
     })
 })
-
 
 test('test pipeline without composite field', function (t) {
   const ops = {
@@ -480,7 +478,6 @@ test('test custom pipeline by removing lowcase stage', function (t) {
     new docProc.RemoveStopWords(),
     new docProc.CalculateTermFrequency(),
     new docProc.CreateCompositeVector(),
-    new docProc.CreateSortVectors(),
     new docProc.FieldedSearch()
   ]))
     .on('data', function (data) {
@@ -523,7 +520,6 @@ test('test custom pipeline by removing lowcase stage', function (t) {
     new docProc.RemoveStopWords(),
     new docProc.CalculateTermFrequency(),
     new docProc.CreateCompositeVector(),
-    new docProc.CreateSortVectors(),
     new docProc.FieldedSearch()
   ]))
     .on('data', function (data) {
