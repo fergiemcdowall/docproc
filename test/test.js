@@ -27,6 +27,7 @@ test('test pipeline', function (t) {
     nGramLength: 1,
     searchable: true,
     separator: /[|' .,\-|(\\\n)]+/,
+    synonyms: {},
     stopwords: [] }
   var results = [
     { id: 'one',
@@ -79,15 +80,15 @@ test('test pipeline', function (t) {
   s.pipe(docProc.pipeline({
     stopwords: []
   }))
-    .on('data', function (data) {
-      t.looseEqual(data, results.shift())
-    })
-    .on('error', function (err) {
-      t.error(err)
-    })
-    .on('end', function () {
-      t.ok('stream ENDed')
-    })
+      .on('data', function (data) {
+        t.looseEqual(data, results.shift())
+      })
+      .on('error', function (err) {
+        t.error(err)
+      })
+      .on('end', function () {
+        t.ok('stream ENDed')
+      })
 })
 
 test('test pipeline', function (t) {
@@ -96,6 +97,7 @@ test('test pipeline', function (t) {
     nGramLength: 1,
     searchable: true,
     separator: /[|' .,\-|(\\\n)]+/,
+    synonyms: {},
     normaliser: '',
     stopwords: [] }
   var results = [
@@ -147,15 +149,15 @@ test('test pipeline', function (t) {
   })
   s.push(null)
   s.pipe(docProc.pipeline(ops))
-    .on('data', function (data) {
-      t.looseEqual(data, results.shift())
-    })
-    .on('error', function (err) {
-      t.error(err)
-    })
-    .on('end', function () {
-      t.ok('stream ENDed')
-    })
+      .on('data', function (data) {
+        t.looseEqual(data, results.shift())
+      })
+      .on('error', function (err) {
+        t.error(err)
+      })
+      .on('end', function () {
+        t.ok('stream ENDed')
+      })
 })
 
 test('test pipeline without composite field', function (t) {
@@ -164,6 +166,7 @@ test('test pipeline without composite field', function (t) {
     fieldedSearch: true,
     nGramLength: 1,
     searchable: true,
+    synonyms: {},
     separator: /[|' .,\-|(\\\n)]+/,
     stopwords: [] }
   var results = [
@@ -211,15 +214,15 @@ test('test pipeline without composite field', function (t) {
   })
   s.push(null)
   s.pipe(docProc.pipeline(ops))
-    .on('data', function (data) {
-      t.looseEqual(data, results.shift())
-    })
-    .on('error', function (err) {
-      t.error(err)
-    })
-    .on('end', function () {
-      t.ok('stream ENDed')
-    })
+      .on('data', function (data) {
+        t.looseEqual(data, results.shift())
+      })
+      .on('error', function (err) {
+        t.error(err)
+      })
+      .on('end', function () {
+        t.ok('stream ENDed')
+      })
 })
 
 test('test pipeline without composite field or wildcard', function (t) {
@@ -229,6 +232,7 @@ test('test pipeline without composite field or wildcard', function (t) {
     nGramLength: 1,
     searchable: true,
     separator: /[|' .,\-|(\\\n)]+/,
+    synonyms: {},
     stopwords: [],
     wildcard: false
   }
@@ -277,15 +281,15 @@ test('test pipeline without composite field or wildcard', function (t) {
   })
   s.push(null)
   s.pipe(docProc.pipeline(ops))
-    .on('data', function (data) {
-      t.looseEqual(data, results.shift())
-    })
-    .on('error', function (err) {
-      t.error(err)
-    })
-    .on('end', function () {
-      t.ok('stream ENDed')
-    })
+      .on('data', function (data) {
+        t.looseEqual(data, results.shift())
+      })
+      .on('error', function (err) {
+        t.error(err)
+      })
+      .on('end', function () {
+        t.ok('stream ENDed')
+      })
 })
 
 test('test pipeline without wildcard', function (t) {
@@ -294,6 +298,7 @@ test('test pipeline without wildcard', function (t) {
     nGramLength: 1,
     searchable: true,
     separator: /[|' .,\-|(\\\n)]+/,
+    synonyms: {},
     stopwords: [],
     wildcard: false }
   var results = [
@@ -345,15 +350,15 @@ test('test pipeline without wildcard', function (t) {
   })
   s.push(null)
   s.pipe(docProc.pipeline(ops))
-    .on('data', function (data) {
-      t.looseEqual(data, results.shift())
-    })
-    .on('error', function (err) {
-      t.error(err)
-    })
-    .on('end', function () {
-      t.ok('stream ENDed')
-    })
+      .on('data', function (data) {
+        t.looseEqual(data, results.shift())
+      })
+      .on('error', function (err) {
+        t.error(err)
+      })
+      .on('end', function () {
+        t.ok('stream ENDed')
+      })
 })
 
 test('test pipeline with wildcard only on text', function (t) {
@@ -362,6 +367,7 @@ test('test pipeline with wildcard only on text', function (t) {
     nGramLength: 1,
     searchable: true,
     separator: /[|' .,\-|(\\\n)]+/,
+    synonyms: {},
     stopwords: [],
     wildcard: false,
     fieldOptions: {

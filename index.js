@@ -30,6 +30,9 @@ const RemoveStopWords = exports.RemoveStopWords =
 
 const Spy = exports.Spy = require('./pipeline/Spy.js') // eslint-disable-line 
 
+const Synonyms = exports.Synonyms =
+  require('./pipeline/Synonyms.js')
+
 const Tokeniser = exports.Tokeniser =
   require('./pipeline/Tokeniser.js')
 
@@ -38,6 +41,7 @@ exports.pipeline = function (options) {
     separator: /[|' .,\-|(\\\n)]+/,
     searchable: true,
     stopwords: stopwords,
+    synonyms: {},
     nGramLength: 1,
     fieldedSearch: true
   }, options)
@@ -49,6 +53,7 @@ exports.pipeline = function (options) {
     new Tokeniser(),
     new RemoveStopWords(),
     new CharacterNormaliser(),
+    new Synonyms(),
     new CalculateTermFrequency(),
     new CreateCompositeVector(),
     new FieldedSearch()
